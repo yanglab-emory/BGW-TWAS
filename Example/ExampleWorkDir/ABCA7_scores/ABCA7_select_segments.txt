@@ -1,0 +1,2 @@
+Cis_geno_block	4.40481e-05
+Trans_geno_block	0.000140456

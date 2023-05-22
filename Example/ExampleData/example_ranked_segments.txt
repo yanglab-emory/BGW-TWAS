@@ -1,0 +1,2 @@
+Trans_geno_block.score.txt.gz 0.015348
+Cis_geno_block.score.txt.gz 6.26158e-05
