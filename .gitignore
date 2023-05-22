@@ -1,6 +1,8 @@
 # Compiled source #
 Example/ExampleWorkDir/ABCA7_scores/output/
 libStatGen/general/test/inputFileTest/data/
+libStatGen/general/test/dbsnp/testFiles/dbsnp.vcf.gz
+
 ###################
 *.com
 *.class
