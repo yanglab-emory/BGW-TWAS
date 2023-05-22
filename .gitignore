@@ -3,7 +3,7 @@ Example/ExampleWorkDir/ABCA7_scores/output/
 Example/ExampleWorkDir/ABCA7_EM_MCMC/
 libStatGen/general/test/inputFileTest/data/
 libStatGen/general/test/dbsnp/testFiles/dbsnp.vcf.gz
-src/*.o
+src/**.o
 
 ###################
 *.o
