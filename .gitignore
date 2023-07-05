@@ -12,7 +12,7 @@ src/*.o
 *.class
 *.dll
 *.so
-
+._*
 
 # Packages #
 ############
