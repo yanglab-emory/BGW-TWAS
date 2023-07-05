@@ -57,7 +57,9 @@ Input files of **BGW-TWAS** tool are all tab-seperated text files:
 
 * Reference transcriptomic data include gene expression file, genotype files of training samples, and a list of filenames for training genotype files, which are required for training Bayesian gene expression prediction models to estimate **cis-** and **trans-** eQTL effect sizes and their corresponding posterior causal probabilities of being an eQTL.
 * Individual-level GWAS data of test samples include genotype VCF files for test samples, a list of filenames for test genotype VCF files, and a phenotype file for test samples.
+* Please also install [**Git LFS**](https://git-lfs.com/) for donwloading example large genotype VCF files correctly. Training VCF files are around 18MB and test VCF files are around 50MB.
 * Summary-level GWAS data include a text file of Z-score statistics by single variant GWAS test.
+
 
 ### 1. Training Gene Expression File
 
