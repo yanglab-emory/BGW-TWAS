@@ -53,9 +53,11 @@ make
 
 ## Input Files
 
-Input files of **BGW-TWAS** tool are all tab-seperated text files:
+Input files of **BGW-TWAS** tool are all tab-seperated text files with lines seperated by `\n`:
 
 * Reference transcriptomic data include gene expression file, genotype files of training samples, and a list of filenames for training genotype files, which are required for training Bayesian gene expression prediction models to estimate **cis-** and **trans-** eQTL effect sizes and their corresponding posterior causal probabilities of being an eQTL.
+* Sample IDs in the gene expression file have to be the same as in VCF files.
+* Note that genotype files can be of any names, and `cis-` or `trans-` blocks will be automatically determined based on the gene region as in the gene expression file. Each genotype file is suggested to include around `10,000` SNPs or `2.5MB` region, which can be determined based on the LD blocks of the same ethnicity.
 * Individual-level GWAS data of test samples include genotype VCF files for test samples, a list of filenames for test genotype VCF files, and a phenotype file for test samples.
 * Please also install [**Git LFS**](https://git-lfs.com/) for donwloading example large genotype VCF files correctly. Training VCF files are around 18MB and test VCF files are around 50MB.
 * Summary-level GWAS data include a text file of Z-score statistics by single variant GWAS test.
@@ -63,7 +65,10 @@ Input files of **BGW-TWAS** tool are all tab-seperated text files:
 
 ### 1. Training Gene Expression File
 
-* A file containing gene expression levels of training samples as in `./Example/ExampleData/Gene_Exp_example.txt`, with one gene per row, and one sample per column starting from the 6th column. The first five columns are required to be gene annotation information including chromosome number, starting position, ending position, Gene ID, and Gene Name or second set of Gene ID. 
+* A file containing gene expression levels of training samples as in `./Example/ExampleData/Gene_Exp_example.txt`, with one gene per row, and one sample per column starting from the 6th column, columns seperated by tabs `
+\t`. The first five columns are required to be gene annotation information including chromosome number, starting position, ending position, Gene ID, and Gene Name or second set of Gene ID. 
+* Note that the GeneName in the fifth column will be used to extract gene expression data, which has to be provided. The fourth column could be the same as the fifth column.
+* New line sperater should be of `\n` instead of `^M`. Otherwise, the file will not be read correctly.
 * The gene expression levels in this file should be the residuals of a linear regression model that regresses out other confounding variables such as age, sex, top 5 genotype PCs from the `log2(normalized_read_counts)` of raw RNAseq data.
 * Example row of the first 6 columns of gene `ABCA7` is as follows:
 
@@ -152,9 +157,11 @@ Shell script `Step1_get_sum_stat.sh` will generate single variant eQTL summary s
 
 #### Example command:
 ```
+# Change "--clean_output 0 " if you want to see intermediate files for debug purpose
 ${BGW_dir}/bin/Step1_get_sumstat.sh --BGW_dir ${BGW_dir} \
 --wkdir ${wkdir} --gene_name ${gene_name} --GeneExpFile ${GeneExpFile} \
---geno_dir ${geno_dir} --LDdir ${LDdir} --Genome_Seg_Filehead ${Genome_Seg_Filehead} \
+--geno_dir ${geno_dir} --LDdir ${LDdir} \
+--Genome_Seg_Filehead ${Genome_Seg_Filehead} \
 --GTfield ${GTfield} --num_cores ${num_cores} --clean_output 1
 ```
 
@@ -187,10 +194,11 @@ Step 2 selects a subset of genome blocks (up to `${max_blocks}`) for joint model
 ```
 Score_dir=${wkdir}/${gene_name}_scores
 
+# Change "--clean_output 0 " if you want to see intermediate files for debug purpose
 ${BGW_dir}/bin/Step2_prune.sh --wkdir ${wkdir} --gene_name ${gene_name} \
 --GeneExpFile ${GeneExpFile} --Genome_Seg_Filehead ${Genome_Seg_Filehead} \
---Score_dir ${Score_dir} \
---p_thresh ${p_thresh} --max_blocks ${max_blocks}
+--Score_dir ${Score_dir} --p_thresh ${p_thresh} --max_blocks ${max_blocks} \
+--clean_output 1
 ```
 
 
@@ -221,6 +229,7 @@ Step 3 will use summary statistics generated from Step 1 for genome blocks prune
 ```
 select_filehead=${wkdir}/${gene_name}_select_filehead.txt
 
+# Change "--clean_output 0 " if you want to see intermediate files for debug purpose
 ${BGW_dir}/bin/Step3_EM-MCMC.sh  --BGW_dir ${BGW_dir} \
 --wkdir ${wkdir} --gene_name ${gene_name} \
 --GeneExpFile ${GeneExpFile} --LDdir ${LDdir} \
@@ -228,7 +237,7 @@ ${BGW_dir}/bin/Step3_EM-MCMC.sh  --BGW_dir ${BGW_dir} \
 --N ${N} --hfile ${hfile} \
 --em 3 --burnin 10000 --Nmcmc 10000 \
 --PCP_thresh ${PCP_thresh} --num_cores ${num_cores} \
---clean_output 0
+--clean_output 1
 ```
 
 * Intermediate output will be deleted unless with input argument `--clean_output 0`. Keeping intermediate outputs is recommended only for testing purpose.
