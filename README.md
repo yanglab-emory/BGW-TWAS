@@ -48,9 +48,9 @@ make
 * Even though a compiled executible file *./bin/Estep_mcmc* from our cluster is provided on GITHUB, please still compile one for your own system.
 
 ### 2. Additional Requirements
-* Tool [**tabix**](https://www.htslib.org/doc/tabix.html)
+* Tool [**TABIX**](https://www.htslib.org/doc/tabix.html)
 * R library [**data.table**](https://github.com/Rdatatable/data.table/wiki/Installation)
-* [GIT LFS](https://git-lfs.com/) is required to download VCF genotype files correctly for running the provided example commands. These should be around 20-50MB per file.
+* [**GIT LFS**](https://git-lfs.com/) is required to download VCF genotype files correctly for running the provided example commands. These should be around 20-50MB per file.
 
 ## Input Files
 
