@@ -50,6 +50,7 @@ make
 ### 2. Additional Requirements
 * Tool [**tabix**](https://www.htslib.org/doc/tabix.html)
 * R library [**data.table**](https://github.com/Rdatatable/data.table/wiki/Installation)
+* [GIT LFS](https://git-lfs.com/) is required to download VCF genotype files correctly for running the provided example commands. These should be around 20-50MB per file.
 
 ## Input Files
 
